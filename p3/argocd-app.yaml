@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: will-app
+  namespace: argocd
+spec:
+  project: default
+
+  source:
+    repoURL: "https://github.com/Lyyrst/IOT-for-argocd.git"
+    targetRevision: main
+    path: k8s
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: dev
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
