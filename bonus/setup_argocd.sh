@@ -2,8 +2,8 @@
 
 set -e
 
-echo "=== Mets le reload argo cd a 60 secondes ===
-kubectl -n argocd patch configmap argocd-cm --type merge  -p '{"data":{"repository.refresh": "60s"}}'"
+echo "=== Mets le reload argo cd a 60 secondes ==="
+kubectl -n argocd patch configmap argocd-cm --type merge  -p '{"data":{"repository.refresh": "60s"}}'
 
 echo "=== Création du cluster k3d ==="
 k3d cluster create bonuscluster -p "80:80@loadbalancer" -p "443:443@loadbalancer" || echo "Cluster déjà existant"
@@ -14,7 +14,6 @@ kubectl get nodes
 echo "=== Création des namespaces ==="
 kubectl create namespace argocd || echo "Namespace argocd deja cree"
 kubectl create namespace dev || echo "Namespace dev deja cree"
-kubectl create namespace gitlab || echo "Namespace gitlab deja cree"
 
 echo "=== Installation d'ArgoCD ==="
 kubectl apply -n argocd \
@@ -37,8 +36,8 @@ echo "=== URL ArgoCD ==="
 echo "ArgoCD UI : http://localhost:${LB_PORT}"
 echo "Identifiant : admin"
 
-echo "=== Le cluster est prêt, sync avec github repo ==="
+echo "=== Le cluster est prêt, sync avec GitLab repo ==="
 kubectl apply -f argocd-app.yaml
 
-echo "=== Verifie que l'application est creee ==="
+echo "=== Vérifie que l'application est créee ==="
 kubectl get applications -n argocd
